@@ -22,7 +22,6 @@ public class Address {
 	public Address(String address, String address2, String district, int cityId, String postalCode,
 			String phone, String location, Date lastUpdate) {
 		super();
-		this.id = id;
 		this.address = address;
 		this.address2 = address2;
 		this.district = district;
