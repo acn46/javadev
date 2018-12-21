@@ -31,7 +31,12 @@ public class Staff {
 		this.password = password;
 		this.lastUpdate = lastUpdate;
 	}
-
+	
+	public Staff() {
+		
+		
+	}
+	
 	public int getStaffId() {
 		return staffId;
 	}
