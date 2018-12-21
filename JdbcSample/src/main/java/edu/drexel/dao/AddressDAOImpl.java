@@ -19,16 +19,19 @@ public class AddressDAOImpl implements AddressDAO {
 	public static final String PWD = "password";
 
 	public List<Address> getAll() {
-		List<Address> list = new ArrayList(); 
+		List<Address> list = new ArrayList();
+		Connection connection = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
 			//get a db connection
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//define query and execute query
 			String sql = "SELECT * FROM address";
-			Statement stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+			stmt = connection.createStatement();
+			rs = stmt.executeQuery(sql);
 			
 			while (rs.next()) {
 				//extract and populate DB data, map to an address, and append to list
@@ -45,32 +48,47 @@ public class AddressDAOImpl implements AddressDAO {
 				
 				list.add(address);	
 			}
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+			}
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 		
 		return list;
 	}
 
 	public Address findByID(int id) {
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		
 		Address address = null; 
 		try {
 			//get a db connection
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//define query and execute query
 			String sql = "SELECT * FROM address WHERE address_id = ?";
-			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt = connection.prepareStatement(sql);
 			
 			//set parameter
 			stmt.setInt(1, id);
 			
 			//execute 
-			ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 			
 			if (rs.next()) {
 				//extract and populate DB data, map to an address, and append to list
@@ -89,24 +107,41 @@ public class AddressDAOImpl implements AddressDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+			}
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
+		
+		
 		
 		return address;
 	}
 
 	public int insert(Address address) {
-		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
 		int addressId = 0;
 		
 		try {
 			//get a db connection
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//define query and execute query
 			String sql = "INSERT INTO address (address, address2, district, city_id, postal_code, phone, location, last_update) " + 
 						"VALUES (?, ?, ?, ?, ?, ?, point (43.7643, 80.2333), CURDATE())";
-			PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			//set parameters for prepared statement 
 			pstmt.setString(1,  address.getAddress());
@@ -120,7 +155,7 @@ public class AddressDAOImpl implements AddressDAO {
 			int rowAffected = pstmt.executeUpdate();
 			
 			if (rowAffected == 1) {
-				ResultSet resultSet = pstmt.getGeneratedKeys();
+				resultSet = pstmt.getGeneratedKeys();
 				if (resultSet.next()) {
 					addressId = resultSet.getInt(1);
 					address.setId(addressId);
@@ -130,6 +165,19 @@ public class AddressDAOImpl implements AddressDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+			}
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 		
 		return addressId;
@@ -137,17 +185,18 @@ public class AddressDAOImpl implements AddressDAO {
 
 	public int update(Address address) {
 		int rowAffected = 0;
-		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 		try {
 			//get a db connection
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//define query and execute query
 			String sql = "UPDATE address " +
 					" SET address=?, address2=?, district=?, city_id=?, postal_code=?, phone=?, location=point(43.7643, 80.2333), last_update = CURDATE() " + 
 					"WHERE address_id = ?"; 
-			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt = connection.prepareStatement(sql);
 			
 			//set parameters for prepared statement 
 			pstmt.setString(1, address.getAddress());
@@ -165,6 +214,15 @@ public class AddressDAOImpl implements AddressDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 		
 		return rowAffected;
@@ -172,15 +230,16 @@ public class AddressDAOImpl implements AddressDAO {
 
 	public int delete(int id) {
 		int rowAffected = 0;
-		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 		try {
 			//get a db connection
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//define query and execute query
 			String sql = "DELETE FROM address WHERE address_id = ?"; 
-			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt = connection.prepareStatement(sql);
 			
 			//set parameters for prepared statement 
 			pstmt.setInt(1, id);
@@ -191,6 +250,15 @@ public class AddressDAOImpl implements AddressDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 		
 		return rowAffected;

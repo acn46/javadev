@@ -20,14 +20,17 @@ public class StaffDAOImpl implements StaffDAO {
 	//open a connection to the server
 	public List<Staff> getAll() {
 		List<Staff> list = new ArrayList();
+		Connection connection = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//SQL statement stored in string 
 			String sql = "SELECT * FROM staff";
-			Statement stmt = connection.createStatement(); //statement can be created from string
-			ResultSet rs = stmt.executeQuery(sql); //query can be executed  
+			stmt = connection.createStatement(); //statement can be created from string
+			rs = stmt.executeQuery(sql); //query can be executed  
 			
 			while (rs.next()) { //rs.next() returns true or false, similar to text I/O
 				Staff staff = new Staff();
@@ -48,26 +51,42 @@ public class StaffDAOImpl implements StaffDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+			}
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 		
 		return list;
 	}
 
 	public Staff findById(int id) {
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		
 		Staff staff = null;
 		try {
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//SQL statement stored in string 
 			String sql = "SELECT * FROM staff WHERE staff_id = ?";
-			PreparedStatement stmt = connection.prepareStatement(sql); //prepare a statement instead of creating to allow for parameter
+			stmt = connection.prepareStatement(sql); //prepare a statement instead of creating to allow for parameter
 			
 			stmt.setInt(1, id);
 			
 			//query is still executed as with created statement 
-			ResultSet rs = stmt.executeQuery(); 
+			rs = stmt.executeQuery(); 
 			
 			if (rs.next()) { //rs.next() returns true or false, similar to text I/O
 				staff = new Staff();
@@ -88,6 +107,19 @@ public class StaffDAOImpl implements StaffDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+			}
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 		
 		return staff;
@@ -95,17 +127,21 @@ public class StaffDAOImpl implements StaffDAO {
 
 	public int insert(Staff staff) {
 		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		
 		int id = 0;
 		
 		try {
 			//get a db connection
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//define query and execute query
 			String sql = "INSERT INTO staff (first_name, last_name, address_id, picture, email, store_id, active, username, password, last_update) " + 
 						"VALUES (?, ?, ?, null, ?, ?, ?, ?, ?, CURDATE())";
-			PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			//set parameters for prepared statement 
 			pstmt.setString(1,  staff.getFirstName());
@@ -121,7 +157,7 @@ public class StaffDAOImpl implements StaffDAO {
 			int rowAffected = pstmt.executeUpdate();
 			
 			if (rowAffected == 1) {
-				ResultSet resultSet = pstmt.getGeneratedKeys();
+				resultSet = pstmt.getGeneratedKeys();
 				if (resultSet.next()) {
 					id = resultSet.getInt(1);
 					staff.setStaffId(id);
@@ -131,6 +167,19 @@ public class StaffDAOImpl implements StaffDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+			}
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 		
 		return id;
@@ -139,15 +188,18 @@ public class StaffDAOImpl implements StaffDAO {
 	public int update(Staff staff) {
 		int rowAffected = 0;
 		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		
 		try {
 			//get a db connection
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//define query and execute query
 			String sql = "UPDATE staff" + 
 						" SET first_name = ?, last_name = ?, address_id = ?, email = ?, store_id = ?, active = ?, username = ?, password = ?, last_update =CURDATE() WHERE staff_id = ?";
-			PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			//set parameters for prepared statement 
 			pstmt.setString(1,  staff.getFirstName());
@@ -168,6 +220,15 @@ public class StaffDAOImpl implements StaffDAO {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 		return rowAffected;
 	} 
@@ -176,15 +237,17 @@ public class StaffDAOImpl implements StaffDAO {
 
 	public int delete(int id) {
 		int rowAffected = 0;
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 		
 		try {
 			//get a db connection
 			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			connection = DriverManager.getConnection(URL,  USER, PWD);
 			
 			//define query and execute query
 			String sql = "DELETE FROM staff WHERE staff_id = ?"; 
-			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt = connection.prepareStatement(sql);
 			
 			//set parameters for prepared statement 
 			pstmt.setInt(1, id);
@@ -195,6 +258,15 @@ public class StaffDAOImpl implements StaffDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 		
 		return rowAffected;
