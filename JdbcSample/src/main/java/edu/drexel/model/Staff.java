@@ -16,7 +16,7 @@ public class Staff {
 	private String password;
 	private Date lastUpdate;
 	
-	public Staff(int staffId, String firstName, String lastName, int addressId, String picture, String email,
+	public Staff(String firstName, String lastName, int addressId, String picture, String email,
 			int storeId, int active, String username, String password, Date lastUpdate) {
 		super();
 		this.staffId = staffId;
