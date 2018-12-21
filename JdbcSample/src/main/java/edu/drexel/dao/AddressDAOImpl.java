@@ -21,12 +21,7 @@ public class AddressDAOImpl implements AddressDAO {
 	public List<Address> getAll() {
 		List<Address> list = new ArrayList();
 		
-		try {
-			DriverManager.registerDriver(new Driver());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		registerDriver();
 
 		try (Connection connection = DriverManager.getConnection(URL,  USER, PWD);
 				Statement stmt = connection.createStatement();
@@ -58,14 +53,18 @@ public class AddressDAOImpl implements AddressDAO {
 		return list;
 	}
 
-	public Address findByID(int id) {
-		
+	private void registerDriver() {
 		try {
 			DriverManager.registerDriver(new Driver());
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+
+	public Address findByID(int id) {
+		
+		registerDriver();
 		
 		Address address = null; 
 		try (Connection connection = DriverManager.getConnection(URL,  USER, PWD);
@@ -103,12 +102,7 @@ public class AddressDAOImpl implements AddressDAO {
 	}
 
 	public int insert(Address address) {
-		try {
-			DriverManager.registerDriver(new Driver());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		registerDriver();
 		
 		int addressId = 0;
 		
@@ -149,12 +143,7 @@ public class AddressDAOImpl implements AddressDAO {
 	public int update(Address address) {
 		int rowAffected = 0;
 		
-		try {
-			DriverManager.registerDriver(new Driver());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		registerDriver();
 
 		try (Connection connection = DriverManager.getConnection(URL,  USER, PWD);
 				PreparedStatement pstmt = connection.prepareStatement("UPDATE address " +
@@ -188,12 +177,7 @@ public class AddressDAOImpl implements AddressDAO {
 
 	public int delete(int id) {
 		int rowAffected = 0;
-		try {
-			DriverManager.registerDriver(new Driver());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		registerDriver();
 		
 		try (Connection connection = DriverManager.getConnection(URL,  USER, PWD);
 				PreparedStatement pstmt = connection.prepareStatement("DELETE FROM address WHERE address_id = ?");

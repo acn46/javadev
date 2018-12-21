@@ -21,12 +21,7 @@ public class StaffDAOImpl implements StaffDAO {
 	public List<Staff> getAll() {
 		List<Staff> list = new ArrayList();
 		
-		try {
-			DriverManager.registerDriver(new Driver());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		registerDriver();
 		
 		try ( Connection connection = DriverManager.getConnection(URL,  USER, PWD); 
 				Statement stmt = connection.createStatement();
@@ -63,13 +58,17 @@ public class StaffDAOImpl implements StaffDAO {
 		return list;
 	}
 
-	public Staff findById(int id) {
+	private void registerDriver() {
 		try {
 			DriverManager.registerDriver(new Driver());
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+
+	public Staff findById(int id) {
+		registerDriver();
 		
 		Staff staff = null;
 		try (Connection connection = DriverManager.getConnection(URL,  USER, PWD); 
@@ -110,12 +109,7 @@ public class StaffDAOImpl implements StaffDAO {
 
 	public int insert(Staff staff) {
 		
-		try {
-			DriverManager.registerDriver(new Driver());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		registerDriver();
 		
 		int id = 0;
 		
@@ -160,12 +154,7 @@ public class StaffDAOImpl implements StaffDAO {
 	public int update(Staff staff) {
 		int rowAffected = 0;
 		
-		try {
-			DriverManager.registerDriver(new Driver());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		registerDriver();
 		
 		try (Connection connection = DriverManager.getConnection(URL,  USER, PWD);
 				PreparedStatement pstmt = connection.prepareStatement("UPDATE staff" + 
@@ -201,12 +190,7 @@ public class StaffDAOImpl implements StaffDAO {
 	public int delete(int id) {
 		int rowAffected = 0;
 		
-		try {
-			DriverManager.registerDriver(new Driver());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		registerDriver();
 		
 		try (Connection connection = DriverManager.getConnection(URL,  USER, PWD);
 				PreparedStatement pstmt = connection.prepareStatement("DELETE FROM staff WHERE staff_id = ?");) {
