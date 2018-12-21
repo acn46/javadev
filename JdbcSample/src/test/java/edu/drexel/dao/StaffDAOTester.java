@@ -55,7 +55,7 @@ public class StaffDAOTester {
 		System.out.println("\ntest update");
 		StaffDAO dao = new StaffDAOImpl();
 		Staff staff = new Staff("John1", "Doe", 1, "John@compmail.com", null, 2, 1, "JDoe", "dwe23321", null);
-		staff.setStaffId(4);
+		staff.setStaffId(10);
 		int rowAffected = dao.update(staff);
 		System.out.println(rowAffected);
 		assertTrue(rowAffected == 1);
@@ -65,7 +65,7 @@ public class StaffDAOTester {
 	public void test_delete() {
 		System.out.println("\ntest delete");
 		StaffDAO dao = new StaffDAOImpl();
-		int rowAffected = dao.delete(4);
+		int rowAffected = dao.delete(5);
 		System.out.println(rowAffected);
 		//assertTrue(rowAffected == 1);
 	}
