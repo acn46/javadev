@@ -54,15 +54,15 @@ public class AddressDAOImpl implements AddressDAO {
 		} finally {
 			try {
 				rs.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				stmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		
@@ -110,15 +110,15 @@ public class AddressDAOImpl implements AddressDAO {
 		} finally {
 			try {
 				rs.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				stmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		
@@ -168,15 +168,15 @@ public class AddressDAOImpl implements AddressDAO {
 		} finally {
 			try {
 				resultSet.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				pstmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		
@@ -217,11 +217,11 @@ public class AddressDAOImpl implements AddressDAO {
 		} finally {
 			try {
 				pstmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		
@@ -253,11 +253,11 @@ public class AddressDAOImpl implements AddressDAO {
 		} finally {
 			try {
 				pstmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		

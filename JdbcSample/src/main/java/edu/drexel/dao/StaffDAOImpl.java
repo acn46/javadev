@@ -54,15 +54,15 @@ public class StaffDAOImpl implements StaffDAO {
 		} finally {
 			try {
 				rs.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				stmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		
@@ -110,15 +110,15 @@ public class StaffDAOImpl implements StaffDAO {
 		} finally {
 			try {
 				rs.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				stmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		
@@ -170,15 +170,15 @@ public class StaffDAOImpl implements StaffDAO {
 		} finally {
 			try {
 				resultSet.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				pstmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		
@@ -223,11 +223,11 @@ public class StaffDAOImpl implements StaffDAO {
 		} finally {
 			try {
 				pstmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		return rowAffected;
@@ -261,11 +261,11 @@ public class StaffDAOImpl implements StaffDAO {
 		} finally {
 			try {
 				pstmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 			}
 		}
 		
