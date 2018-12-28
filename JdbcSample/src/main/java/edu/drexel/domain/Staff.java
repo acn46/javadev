@@ -1,4 +1,4 @@
-package edu.drexel.model;
+package edu.drexel.domain;
 
 import java.util.Date;
 

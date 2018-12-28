@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.drexel.model.Staff;
+import edu.drexel.domain.Staff;
 
 public class StaffDAOTester {
 

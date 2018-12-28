@@ -2,7 +2,7 @@ package edu.drexel.dao;
 
 import java.util.List;
 
-import edu.drexel.model.Staff;
+import edu.drexel.domain.Staff;
 
 public interface StaffDAO {
 	List<Staff> getAll();

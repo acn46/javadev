@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.drexel.model.Address;
+import edu.drexel.domain.Address;
 
 public class AddressDAOTester {
 

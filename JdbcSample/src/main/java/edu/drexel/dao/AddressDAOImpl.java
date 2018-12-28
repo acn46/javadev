@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.mysql.cj.jdbc.Driver;
 
-import edu.drexel.model.Address;
+import edu.drexel.domain.Address;
 
 public class AddressDAOImpl implements AddressDAO {
 	public static final String URL = "jdbc:mysql://localhost:3306/sakila";

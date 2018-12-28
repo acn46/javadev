@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.drexel.model.Address;
+import edu.drexel.domain.Address;
 
 public interface AddressDAO {
 	static Map<Integer, Address> ADDRESS_MAP = new HashMap<>();

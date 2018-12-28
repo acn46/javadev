@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mysql.cj.jdbc.Driver;
-import edu.drexel.model.Staff;
+
+import edu.drexel.domain.Staff;
 
 public class StaffDAOImpl implements StaffDAO {
 	public static final String URL = "jdbc:mysql://localhost:3306/sakila";
