@@ -43,7 +43,10 @@ public class AddressRepoImpl implements AddressRepo {
 				//address.setLocation(rs.getString("location"));
 				address.setLastUpdate(rs.getDate("last_update"));
 				
-				list.add(address);	
+				list.add(address);
+				
+				// cache update.
+				Address.updateCache(address);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

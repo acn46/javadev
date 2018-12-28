@@ -1,6 +1,8 @@
 package edu.drexel.domain;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * VO/DTO for address
@@ -8,6 +10,7 @@ import java.util.Date;
  *
  */
 public class Address {
+	private static Map<Integer, Address> ALL_ADDRESS_MAP = new HashMap<>();
 
 	private int id;
 	private String address;
@@ -36,6 +39,14 @@ public class Address {
 		// TODO Auto-generated constructor stub
 	}
 
+	public static void updateCache(Address address) {
+		ALL_ADDRESS_MAP.put(address.getId(), address);
+	}
+	
+	public static Address getAddress(int id) {
+		return ALL_ADDRESS_MAP.get(id);
+	}
+	
 	public int getId() {
 		return id;
 	}
