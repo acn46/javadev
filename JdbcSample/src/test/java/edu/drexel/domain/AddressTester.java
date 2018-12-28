@@ -1,4 +1,4 @@
-package edu.drexel.model;
+package edu.drexel.domain;
 
 import static org.junit.Assert.*;
 

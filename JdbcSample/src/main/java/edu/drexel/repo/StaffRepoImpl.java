@@ -1,4 +1,4 @@
-package edu.drexel.dao;
+package edu.drexel.repo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +13,7 @@ import com.mysql.cj.jdbc.Driver;
 
 import edu.drexel.domain.Staff;
 
-public class StaffDAOImpl implements StaffDAO {
+public class StaffRepoImpl implements StaffRepo {
 	public static final String URL = "jdbc:mysql://localhost:3306/sakila";
 	public static final String USER = "user1";
 	public static final String PWD = "password";
