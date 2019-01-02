@@ -10,12 +10,11 @@ import edu.drexel.domain.Address;
 public class AddressRepoImpl extends AbstractRepoImpl<Address> implements AddressRepo {
 
 	public List<Address> getAll() {
-		return getAll("SELECT * FROM address");
+		return getAll("SELECT * FROM address", (rs) -> mapRow(rs) );
 		
 	}
-
-	@Override
-	protected Address mapRow(ResultSet rs) throws SQLException {
+	
+	private Address mapRow(ResultSet rs) throws SQLException {
 		Address address = new Address(); 
 		address.setId(rs.getInt("address_id"));
 		address.setAddress(rs.getString("address"));
@@ -30,12 +29,11 @@ public class AddressRepoImpl extends AbstractRepoImpl<Address> implements Addres
 	}
 
 	public Address findByID(int id) {
-		return findById("SELECT * FROM address WHERE address_id = ?", id);
+		return findById("SELECT * FROM address WHERE address_id = ?", id, (rs) -> mapRowEx(rs) );
 		
 	}
-
-	@Override
-	protected Address mapRowEx(ResultSet rs) throws SQLException {
+	
+	private Address mapRowEx(ResultSet rs) throws SQLException {
 		Address address;
 		address = new Address(); 
 		address.setId(rs.getInt("address_id"));
@@ -54,7 +52,7 @@ public class AddressRepoImpl extends AbstractRepoImpl<Address> implements Addres
 		String sql ="INSERT INTO address (address, address2, district, city_id, "
 						+ "postal_code, phone, location, last_update) " + 
 						"VALUES (?, ?, ?, ?, ?, ?, point (43.7643, 80.2333), CURDATE())";
-		return insert(sql, address);
+		return insert(sql, address, (address1, pstmt) -> setInsertParams(address1, pstmt) );
 	}
 
 	@Override
@@ -67,9 +65,8 @@ public class AddressRepoImpl extends AbstractRepoImpl<Address> implements Addres
 }
 		return addressId;
 	}
-
-	@Override
-	protected void setInsertParams(Address address, PreparedStatement pstmt) throws SQLException {
+	
+	private void setInsertParams(Address address, PreparedStatement pstmt) throws SQLException {
 		pstmt.setString(1,  address.getAddress());
 		pstmt.setString(2, address.getAddress2());
 		pstmt.setString(3,  address.getDistrict());
@@ -83,17 +80,15 @@ public class AddressRepoImpl extends AbstractRepoImpl<Address> implements Addres
 						" SET address=?, address2=?, district=?, city_id=?, postal_code=?, "
 						+ "phone=?, location=point(43.7643, 80.2333), last_update = CURDATE() " + 
 						"WHERE address_id = ?";
-		return update(sql, address);
+		return update(sql, address, (address1, pstmt) -> setUpdateParams(address1, pstmt) );
 	}
 	
-	@Override
-	protected void setUpdateParams(Address address, PreparedStatement pstmt) throws SQLException {
+	private void setUpdateParams(Address address, PreparedStatement pstmt) throws SQLException {
 		setInsertParams(address, pstmt);
 		pstmt.setInt(7, address.getId());
 	}
 
 	public int delete(int id) {
-
 		return delete("DELETE FROM address WHERE address_id = ?", id);
 	}
 }

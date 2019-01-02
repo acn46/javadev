@@ -16,7 +16,7 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 	public static final String USER = "user1";
 	public static final String PWD = "password";
 
-	public final List<T> getAll(String sql) {
+	public final List<T> getAll(String sql, RowMapper<T> rowMapper) {
 		List<T> list = new ArrayList<>();
 		
 		registerDriver();
@@ -27,7 +27,8 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 				) {
 			
 			while (rs.next()) {
-				T domain = mapRow(rs);
+//				T domain = mapRow(rs);
+				T domain = rowMapper.mapRow(rs);
 				list.add(domain);
 			}
 		} catch (SQLException e) {
@@ -38,8 +39,8 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 		return list;
 	}
 
-	// subclass need to provide impl for this.
-	protected abstract T mapRow(ResultSet rs) throws SQLException;
+//	// subclass need to provide impl for this.
+//	protected abstract T mapRow(ResultSet rs) throws SQLException;
 
 	protected void registerDriver() {
 		try {
@@ -50,7 +51,7 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 		}
 	}
 
-	public final T findById(String sql, int id) {
+	public final T findById(String sql, int id, RowMapper<T> rowMapper) {
 		registerDriver();
 		
 		T domain = null;
@@ -63,7 +64,8 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 			
 			try (ResultSet rs = stmt.executeQuery();) {
 				if (rs.next()) {
-					domain = mapRowEx(rs);
+//					domain = mapRowEx(rs);
+					domain = rowMapper.mapRow(rs);
 				}
 			}
 		} catch (SQLException e) {
@@ -74,9 +76,9 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 		return domain;
 	}
 
-	protected abstract T mapRowEx(ResultSet rs) throws SQLException;
+//	protected abstract T mapRowEx(ResultSet rs) throws SQLException;
 
-	public final int insert(String sql, T domain) {
+	public final int insert(String sql, T domain, ParamSetter<T> paramSetter) {
 		
 		registerDriver();
 		
@@ -87,7 +89,8 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 				) {
 			
 			//set parameters for prepared statement 
-			setInsertParams(domain, pstmt);
+//			setInsertParams(domain, pstmt);
+			paramSetter.setParams(domain, pstmt);
 			
 			//execute query
 			int rowAffected = pstmt.executeUpdate();
@@ -104,11 +107,11 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 		return id;
 	}
 
-	protected abstract void setInsertParams(T domain, PreparedStatement pstmt) throws SQLException;
+//	protected abstract void setInsertParams(T domain, PreparedStatement pstmt) throws SQLException;
 	
 	protected abstract int handleInsertKey(T domain, int id, PreparedStatement pstmt) throws SQLException;
 	
-	public final int update(String sql, T domain) {
+	public final int update(String sql, T domain, ParamSetter<T> paramSetter) {
 		int rowAffected = 0;
 		
 		registerDriver();
@@ -118,7 +121,8 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 				) {
 			
 			//set parameters for prepared statement 
-			setUpdateParams(domain, pstmt);
+//			setUpdateParams(domain, pstmt);
+			paramSetter.setParams(domain, pstmt);
 			
 			//execute query
 			rowAffected = pstmt.executeUpdate();
@@ -130,7 +134,7 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 		return rowAffected;
 	}
 
-	protected abstract void setUpdateParams(T domain, PreparedStatement pstmt) throws SQLException;
+//	protected abstract void setUpdateParams(T domain, PreparedStatement pstmt) throws SQLException;
 	
 	public final int delete(String sql, int id) {
 		int rowAffected = 0;

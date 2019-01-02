@@ -13,11 +13,10 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 
 	public List<BankAccount> getAll() {
 		String sql = "SELECT * FROM bank_account";
-		return getAll(sql);
+		return getAll(sql, (rs) -> mapRow(rs) );
 	}
 
-	@Override
-	protected BankAccount mapRow(ResultSet rs) throws SQLException {
+	private BankAccount mapRow(ResultSet rs) throws SQLException {
 		//extract and populate DB data, map to an bankAccount, and append to list
 		BankAccount bankAccount = new BankAccount(); 
 		bankAccount.setAccountId(rs.getInt("account_id"));
@@ -28,11 +27,10 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 	
 	public BankAccount findByID(int id) {
 		String sql = "SELECT * FROM bank_account WHERE account_id = ?";
-		return findById(sql, id);
+		return findById(sql, id, (rs) -> mapRowEx(rs) );
 	}
 
-	@Override
-	protected BankAccount mapRowEx(ResultSet rs) throws SQLException {
+	private BankAccount mapRowEx(ResultSet rs) throws SQLException {
 		BankAccount bankAccount;
 		//extract and populate DB data, map to an bankAccount, and append to list
 		bankAccount = new BankAccount(); 
@@ -45,7 +43,7 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 	public int insert(BankAccount bankAccount) {
 		String sql = "INSERT INTO bank_account (account_id, account_type, balance) " + 
 				"VALUES (?, ?, ?)";
-		return insert(sql, bankAccount);
+		return insert(sql, bankAccount, (bankAccount1, pstmt) -> setInsertParams(bankAccount1, pstmt) );
 	}
 
 	@Override
@@ -60,30 +58,26 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 		return bankAccountId;
 	}
 
-	@Override
-	protected void setInsertParams(BankAccount bankAccount, PreparedStatement pstmt) throws SQLException {
+	private void setInsertParams(BankAccount bankAccount, PreparedStatement pstmt) throws SQLException {
 		pstmt.setInt(1,  bankAccount.getAccountId());
 		pstmt.setString(2, bankAccount.getAccountType());
 		pstmt.setDouble(3,  bankAccount.getBalance());
 	}
 
 	public int update(BankAccount bankAccount) {
-		
 		String sql = "UPDATE bank_account " +
 				" SET account_type=?, balance=?"+ 
 				"WHERE account_id = ?";
-		return update(sql, bankAccount);
+		return update(sql, bankAccount, (bankAccount1, pstmt) -> setUpdateParams(bankAccount1, pstmt) );
 	}
 
-	@Override
-	protected void setUpdateParams(BankAccount bankAccount, PreparedStatement pstmt) throws SQLException {
+	private void setUpdateParams(BankAccount bankAccount, PreparedStatement pstmt) throws SQLException {
 		pstmt.setString(1, bankAccount.getAccountType());
 		pstmt.setDouble(2,  bankAccount.getBalance());
 		pstmt.setInt(3, bankAccount.getAccountId());
 	}
 
 	public int delete(int id) {
-		
 		String sql = "DELETE FROM bank_account WHERE account_id = ?";
 		return delete(sql, id);
 	}
@@ -140,7 +134,6 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 		}
 		
 		return rowAffected;
-		
 	}
 
 
