@@ -16,6 +16,7 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 		return getAll(sql);
 	}
 
+	@Override
 	protected BankAccount mapRow(ResultSet rs) throws SQLException {
 		//extract and populate DB data, map to an bankAccount, and append to list
 		BankAccount bankAccount = new BankAccount(); 
@@ -30,6 +31,7 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 		return findById(sql, id);
 	}
 
+	@Override
 	protected BankAccount mapRowEx(ResultSet rs) throws SQLException {
 		BankAccount bankAccount;
 		//extract and populate DB data, map to an bankAccount, and append to list
@@ -46,6 +48,7 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 		return insert(sql, bankAccount);
 	}
 
+	@Override
 	protected int handleInsertKey(BankAccount bankAccount, int bankAccountId, PreparedStatement pstmt)
 			throws SQLException {
 		try (ResultSet resultSet = pstmt.getGeneratedKeys();) {
@@ -57,6 +60,7 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 		return bankAccountId;
 	}
 
+	@Override
 	protected void setInsertParams(BankAccount bankAccount, PreparedStatement pstmt) throws SQLException {
 		pstmt.setInt(1,  bankAccount.getAccountId());
 		pstmt.setString(2, bankAccount.getAccountType());
@@ -71,6 +75,7 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 		return update(sql, bankAccount);
 	}
 
+	@Override
 	protected void setUpdateParams(BankAccount bankAccount, PreparedStatement pstmt) throws SQLException {
 		pstmt.setString(1, bankAccount.getAccountType());
 		pstmt.setDouble(2,  bankAccount.getBalance());

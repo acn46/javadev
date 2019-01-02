@@ -34,6 +34,7 @@ public class AddressRepoImpl extends AbstractRepoImpl<Address> implements Addres
 		
 	}
 
+	@Override
 	protected Address mapRowEx(ResultSet rs) throws SQLException {
 		Address address;
 		address = new Address(); 
@@ -56,6 +57,7 @@ public class AddressRepoImpl extends AbstractRepoImpl<Address> implements Addres
 		return insert(sql, address);
 	}
 
+	@Override
 	protected int handleInsertKey(Address address, int addressId, PreparedStatement pstmt) throws SQLException {
 		try (ResultSet resultSet = pstmt.getGeneratedKeys();) {
 		if (resultSet.next()) {
@@ -92,7 +94,7 @@ public class AddressRepoImpl extends AbstractRepoImpl<Address> implements Addres
 
 	public int delete(int id) {
 
-	return delete("DELETE FROM address WHERE address_id = ?", id);
+		return delete("DELETE FROM address WHERE address_id = ?", id);
 	}
 }
 	
