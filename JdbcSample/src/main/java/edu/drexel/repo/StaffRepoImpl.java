@@ -7,7 +7,7 @@ import java.util.List;
 
 import edu.drexel.domain.Staff;
 
-public class StaffRepoImpl extends AbstractRepoImpl<Staff> implements StaffRepo {
+public class StaffRepoImpl extends AbstractRepoImpl<Staff> implements StaffRepo{
 
 	public List<Staff> getAll() {
 		return this.getAll("SELECT * FROM staff");
