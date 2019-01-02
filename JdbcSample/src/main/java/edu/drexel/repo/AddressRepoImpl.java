@@ -11,7 +11,6 @@ public class AddressRepoImpl extends AbstractRepoImpl<Address> implements Addres
 
 	public List<Address> getAll() {
 		return getAll("SELECT * FROM address", (rs) -> mapRow(rs) );
-		
 	}
 	
 	private Address mapRow(ResultSet rs) throws SQLException {
