@@ -27,6 +27,7 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 	
 	public BankAccount findByID(int id) {
 		String sql = "SELECT * FROM bank_account WHERE account_id = ?";
+		System.out.println("sql = " + sql);
 		return findById(sql, id, (rs) -> mapRowEx(rs) );
 	}
 
