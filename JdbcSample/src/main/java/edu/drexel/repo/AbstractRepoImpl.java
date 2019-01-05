@@ -16,6 +16,7 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 	public static final String USER = "user1";
 	public static final String PWD = "password";
 
+	@Override
 	public final List<T> getAll(String sql, RowMapper<T> rowMapper) {
 		List<T> list = new ArrayList<>();
 		
@@ -51,6 +52,7 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 		}
 	}
 
+	@Override
 	public final T findById(String sql, int id, RowMapper<T> rowMapper) {
 		registerDriver();
 		
@@ -78,15 +80,24 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 
 //	protected abstract T mapRowEx(ResultSet rs) throws SQLException;
 
+	@Override
 	public final int insert(String sql, T domain, ParamSetter<T> paramSetter) {
 		
+		long t1 = System.currentTimeMillis();
+		
 		registerDriver();
+		
+		long t2 = System.currentTimeMillis();
+		System.out.println("t2 = " + (t2 -t1));
 		
 		int id = 0;
 		
 		try ( Connection connection = DriverManager.getConnection(URL,  USER, PWD);
 			PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				) {
+			
+			long t3 = System.currentTimeMillis();
+			System.out.println("t3 = " + (t3 -t2));
 			
 			//set parameters for prepared statement 
 //			setInsertParams(domain, pstmt);
@@ -99,6 +110,8 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 				id = handleInsertKey(domain, id, pstmt);
 			} 
 			
+			long t4 = System.currentTimeMillis();
+			System.out.println("t4= " + (t4 -t3));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,6 +120,68 @@ public abstract class AbstractRepoImpl<T> implements Repo<T> {
 		return id;
 	}
 
+	@Override
+	public final int insertList(String sql, List<T> domainList, ParamSetter<T> paramSetter) {
+		
+		long t1 = System.currentTimeMillis();
+		
+		registerDriver();
+		
+		long t2 = System.currentTimeMillis();
+		System.out.println("t2 = " + (t2 -t1));
+		
+		int id = 0;
+		final int BATCH_SIZE = 1000;
+		try ( Connection connection = DriverManager.getConnection(URL,  USER, PWD);
+			PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				) {
+			
+			long t3 = System.currentTimeMillis();
+			System.out.println("t3 = " + (t3 -t2));
+			
+			int k = 0;
+			//for (T domain : domainList) {
+			for (int i = 0; i < domainList.size(); i++) {
+				T domain = domainList.get(i);
+				
+				//set parameters for prepared statement 
+				//			setInsertParams(domain, pstmt);
+				paramSetter.setParams(domain, pstmt);
+				
+				//batch 
+				
+				pstmt.addBatch();
+				//execute query
+				//int rowAffected = pstmt.executeUpdate();
+				
+				//if (rowAffected == 1) {
+				//	id = handleInsertKey(domain, id, pstmt);
+				//} 
+				
+				k++;
+				if (i % BATCH_SIZE == BATCH_SIZE - 1) {
+					pstmt.executeBatch();
+					k = 0;
+				}
+			}
+			
+			//Leftover from loops
+			if (k != 0) {
+				pstmt.executeBatch();
+			}
+			
+			//int[] rowAffected = pstmt.executeBatch();
+			
+			long t4 = System.currentTimeMillis();
+			System.out.println("t4= " + (t4 -t3));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return id;
+	}
+	
 //	protected abstract void setInsertParams(T domain, PreparedStatement pstmt) throws SQLException;
 	
 	protected abstract int handleInsertKey(T domain, int id, PreparedStatement pstmt) throws SQLException;

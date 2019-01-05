@@ -3,11 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>edu.drexel</groupId>
-  <artifactId>JdbcSample</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>JdbcSample</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -27,4 +25,6 @@
     	<version>8.0.13</version>
     </dependency>
   </dependencies>
+  <artifactId>SakilaApp</artifactId>
+  <name>SakilaApp</name>
 </project>

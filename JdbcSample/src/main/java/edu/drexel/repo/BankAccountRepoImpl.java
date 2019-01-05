@@ -45,6 +45,12 @@ public class BankAccountRepoImpl extends AbstractRepoImpl<BankAccount> implement
 				"VALUES (?, ?, ?)";
 		return insert(sql, bankAccount, (bankAccount1, pstmt) -> setInsertParams(bankAccount1, pstmt) );
 	}
+	
+	public int insertList(List<BankAccount> bankAccountList) {
+		String sql = "INSERT INTO bank_account (account_id, account_type, balance) " + 
+				"VALUES (?, ?, ?)";
+		return insertList(sql, bankAccountList, (bankAccount1, pstmt) -> setInsertParams(bankAccount1, pstmt) );
+	}
 
 	@Override
 	protected int handleInsertKey(BankAccount bankAccount, int bankAccountId, PreparedStatement pstmt)
