@@ -2,12 +2,21 @@ package edu.drexel.sakila.service;
 
 import java.util.List;
 
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+
 import edu.drexel.domain.Staff;
 import edu.drexel.repo.StaffRepo;
 import edu.drexel.repo.StaffRepoImpl;
 
+@Path("/staffs")
 public class StaffService {
 	
+	@GET
 	public List<Staff> getAll() {
 		System.out.println("\nin getAll");
 		StaffRepo dao = new StaffRepoImpl();
@@ -16,13 +25,16 @@ public class StaffService {
 
 	}
 	
-	public Staff findByID(int id) {
+	@GET
+	@Path("/{id}")
+	public Staff findByID(@PathParam("id") int id) {
 		System.out.println("\nin findByID");
 		StaffRepo dao = new StaffRepoImpl();
 		Staff staff = dao.findById(id);
 		return staff;
 	}
 	
+	@PUT
 	public int insert(Staff staff) {
 		System.out.println("\nin Insert");
 		StaffRepo dao = new StaffRepoImpl();
@@ -31,6 +43,7 @@ public class StaffService {
 		return staffId;
 	}
 	
+	@POST
 	public int update(Staff staff) {
 		System.out.println("\nin update");
 		StaffRepo dao = new StaffRepoImpl();
@@ -40,7 +53,9 @@ public class StaffService {
 		return rowAffected;
 	}
 	
-	public int delete(int id) {
+	@DELETE
+	@Path("/{id}")
+	public int delete(@PathParam("id") int id) {
 		System.out.println("\nin delete");
 		StaffRepo dao = new StaffRepoImpl();
 		int rowAffected = dao.delete(id);
