@@ -13,7 +13,7 @@ import com.mysql.cj.jdbc.Driver;
 
 public abstract class AbstractRepoImpl<T> implements Repo<T> {
 	public static final String URL = "jdbc:mysql://localhost:3306/sakila";
-	public static final String USER = "user1";
+	public static final String USER = "root";
 	public static final String PWD = "password";
 
 	@Override
